@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>JEE Trackerz</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+*{box-sizing:border-box;font-family:Arial,Helvetica,sans-serif}
+body{margin:0;background:#f5f7fa;color:#222}
+
+/* HEADER (SAME UI) */
+header{
+  background:#2e7d32;
+  color:#fff;
+  padding:14px;
+  font-size:22px;
+  font-weight:700;
+}
+.container{padding:16px;max-width:1100px;margin:auto}
+h1{color:#2e7d32;text-align:center;margin:10px 0}
+.sub{text-align:center;color:#555}
+.countdown{text-align:center;margin:10px 0;font-size:16px}
+
+/* YOUTUBE CARD (SAME FEEL) */
+.yt{
+  background:linear-gradient(135deg,#ff4b6e,#ff2f92);
+  color:#fff;border-radius:16px;padding:18px;margin:20px 0;
+}
+.yt h2{margin:0 0 8px}
+.yt a{
+  display:inline-block;background:#fff;color:#ff2f92;
+  padding:10px 18px;border-radius:25px;
+  text-decoration:none;font-weight:700;margin-top:10px
+}
+
+/* PROGRESS CIRCLE */
+.progress-wrap{display:flex;justify-content:center;margin:20px 0}
+svg{width:160px;height:160px}
+circle{fill:none;stroke-width:12}
+.bg{stroke:#e0e0e0}
+.fg{
+  stroke:url(#grad);
+  stroke-linecap:round;
+  transform:rotate(-90deg);
+  transform-origin:50% 50%;
+  transition:stroke-dashoffset .6s ease;
+}
+.progress-text{
+  position:absolute;text-align:center;
+  font-size:22px;font-weight:700
+}
+
+/* SUBJECT CARDS */
+.subject{
+  background:#fff;border-radius:14px;
+  padding:14px;margin-bottom:16px;
+  box-shadow:0 4px 12px rgba(0,0,0,.08)
+}
+.subject h3{margin:0;cursor:pointer}
+.chapter{margin-top:10px;padding:10px;border-top:1px solid #eee}
+.trackers label{
+  display:inline-block;margin-right:12px;font-size:14px
+}
+.hidden{display:none}
+
+/* QUOTES */
+.quote{
+  text-align:center;
+  font-style:italic;
+  margin:16px 0;
+  color:#2e7d32;
+  font-weight:600
+}
+</style>
+</head>
+
+<body>
+
+<header>📘 JEE Trackerz</header>
+
+<div class="container">
+<h1>Start your journey with JEE Trackerz</h1>
+<div class="sub">Track • Study • Crack JEE</div>
+<div class="countdown">⏳ <span id="days"></span> days to JEE 2027</div>
+
+<!-- PROGRESS -->
+<div class="progress-wrap">
+<div style="position:relative">
+<svg viewBox="0 0 120 120">
+<defs>
+<linearGradient id="grad">
+<stop offset="0%" stop-color="#66bb6a"/>
+<stop offset="100%" stop-color="#2e7d32"/>
+</linearGradient>
+</defs>
+<circle class="bg" cx="60" cy="60" r="50"></circle>
+<circle class="fg" cx="60" cy="60" r="50"
+stroke-dasharray="314"
+stroke-dashoffset="314"
+id="progressCircle"></circle>
+</svg>
+<div class="progress-text" id="overallText" style="top:55px;left:55px"></div>
+</div>
+</div>
+
+<!-- QUOTES -->
+<div class="quote" id="quote"></div>
+
+<!-- YOUTUBE -->
+<div class="yt">
+<h2>📣 Follow me on YouTube</h2>
+<p>Daily motivation & JEE guidance<br>
+All PW batches free 🆓 • Books & modules 🥷💖</p>
+<a href="https://www.youtube.com/@JEETrackerz" target="_blank">VIEW</a>
+</div>
+
+<!-- SUBJECTS -->
+<div id="subjects"></div>
+
+</div>
+
+<script>
+/* ---------- DATA ---------- */
+const trackers=["Lecture","Notes","DPP","PYQ"];
+
+const syllabus={
+Physics:[
+"Mathematical Tools","Units and Measurements","Motion in a Straight Line","Motion in a Plane",
+"Newton’s Laws of Motion","Work, Energy & Power","Centre of Mass & System of Particles",
+"Rotational Motion","Gravitation","Mechanical Properties of Solids",
+"Mechanical Properties of Fluids","Thermal Properties of Matter",
+"Kinetic Theory of Gases","Thermodynamics","Oscillations","Waves",
+"Electric Charges and Fields","Electrostatic Potential and Capacitance",
+"Current Electricity","Moving Charges and Magnetism","Magnetism and Matter",
+"Electromagnetic Induction","Alternating Current","Electromagnetic Waves",
+"Ray Optics and Optical Instruments","Wave Optics",
+"Dual Nature of Radiation and Matter","Atoms","Nuclei",
+"Semiconductor Electronics"
+],
+Chemistry:[
+"Atomic Structure","Some Basic Concepts of Chemistry",
+"Classification of Elements and Periodicity in Properties",
+"Chemical Bonding and Molecular Structure","States of Matter",
+"Chemical Thermodynamics and Energetics","Redox Reaction","Equilibrium",
+"The p-Block Elements","IUPAC Nomenclature","Isomerism",
+"General Organic Chemistry","Hydrocarbons",
+"Purification and Analysis of Organic Compounds","Hydrogen","s-Block Elements",
+"Environmental Chemistry","Solutions","Electrochemistry","Chemical Kinetics",
+"Haloalkanes and Haloarenes","Alcohols, Phenols and Ethers",
+"Aldehydes, Ketones and Carboxylic Acids","Amines","Biomolecules",
+"Coordination Compounds","The p-block Elements (Group 15 to 18)",
+"The d and f-Block Elements","Salt Analysis","The Solid State",
+"Surface Chemistry","Isolation of Metals","Polymers","Chemistry in Everyday Life"
+],
+Math:[
+"Basic Mathematics and Logarithm","Sets","Trigonometric Ratios and Identities",
+"Trigonometric Equations","Quadratic Equations","Complex Number",
+"Sequences and Series","Binomial Theorem","Permutations and Combinations",
+"Straight Lines","Circles","Parabola","Ellipse","Hyperbola",
+"Statistics","Properties of a Triangle","Determinants","Matrices",
+"Relations and Functions","Inverse Trigonometric Functions",
+"Limit, Continuity, and Differentiability","Methods of Differentiation",
+"Applications of Derivatives","Indefinite Integration","Definite Integration",
+"Application of Integrals","Differential Equations","Vector Algebra",
+"Three-Dimensional Geometry","Probability"
+]
+};
+
+const quotes=[
+"Consistency beats talent in JEE.","One lecture today saves one regret tomorrow.",
+"PYQs are your real teachers.","JEE rewards discipline, not motivation.",
+"Small steps daily = big rank.","Revision is the real power.",
+"Focus beats hours.","Trust the process.","Solve more, worry less.",
+"Rank comes from repetition."
+];
+
+/* ---------- UI BUILD ---------- */
+const subjectsDiv=document.getElementById("subjects");
+
+Object.keys(syllabus).forEach(sub=>{
+const box=document.createElement("div");
+box.className="subject";
+box.innerHTML=`<h3 onclick="this.nextElementSibling.classList.toggle('hidden')">${sub}</h3>
+<div class="hidden"></div>`;
+const inner=box.querySelector("div");
+syllabus[sub].forEach(ch=>{
+const cid=sub+"_"+ch;
+const saved=JSON.parse(localStorage.getItem(cid)||"{}");
+let html=`<div class="chapter"><b>${ch}</b><div class="trackers">`;
+trackers.forEach(t=>{
+html+=`<label>
+<input type="checkbox" ${saved[t]?"checked":""}
+onchange="toggle('${cid}','${t}',this.checked)"> ${t}
+</label>`;
+});
+html+="</div></div>";
+inner.innerHTML+=html;
+});
+subjectsDiv.appendChild(box);
+});
+
+/* ---------- LOGIC ---------- */
+function toggle(cid,key,val){
+const data=JSON.parse(localStorage.getItem(cid)||"{}");
+data[key]=val;
+localStorage.setItem(cid,JSON.stringify(data));
+updateProgress();
+}
+
+function updateProgress(){
+let done=0,total=0;
+Object.keys(syllabus).forEach(sub=>{
+syllabus[sub].forEach(ch=>{
+const data=JSON.parse(localStorage.getItem(sub+"_"+ch)||"{}");
+trackers.forEach(t=>{
+total++;
+if(data[t])done++;
+});
+});
+});
+const percent=total?Math.round(done/total*100):0;
+document.getElementById("overallText").innerText=percent+"%";
+document.getElementById("progressCircle")
+.style.strokeDashoffset=314-(314*percent/100);
+}
+updateProgress();
+
+/* ---------- COUNTDOWN ---------- */
+const jee=new Date("2027-01-01");
+document.getElementById("days").innerText=
+Math.ceil((jee-new Date())/(1000*60*60*24));
+
+/* ---------- QUOTES ---------- */
+let qi=0;
+setInterval(()=>{
+document.getElementById("quote").innerText=quotes[qi%quotes.length];
+qi++;
+},5000);
+
+/* ---------- 8:30 PM NOTIFICATION ---------- */
+if("Notification"in window){
+Notification.requestPermission();
+setInterval(()=>{
+const d=new Date();
+if(d.getHours()==20 && d.getMinutes()==30){
+new Notification("JEE Trackerz 💪",{
+body:"How was your day? Don’t lose heart. Tomorrow work harder."
+});
+}
+},60000);
+}
+</script><footer style="
+  text-align:center;
+  padding:14px;
+  font-size:13px;
+  color:#8aa89b;
+  background:#0f1f17;
+  margin-top:40px;
+  font-family: 'Poppins', sans-serif;
+">
+  Made with ❤️ by <b>Nalayak Mayank</b> (I hate myself 🎀)
+</footer>
+</body>
+</html>
