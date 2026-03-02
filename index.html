@@ -1,0 +1,1914 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>JEE Trackerz</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/regular/style.css">
+
+<link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/bold/style.css">
+
+
+<style>
+body{
+  margin:0;
+  padding:0;
+}
+*{box-sizing:border-box;}
+
+body{
+  margin:0;
+  font-family:'Outfit', sans-serif;
+  background:#f8fafc;
+  color:#1e293b;
+  overflow-x:hidden;
+}
+.section{
+  display:none;
+  padding:20px 0 100px;
+
+}
+
+.section.active{
+  display:block;
+}
+
+.wrapper{
+  width:100%;
+  max-width:420px;
+  margin:0 auto;
+  padding:0 15px;
+}
+
+h2{
+  text-align:center;
+  margin-bottom:20px;
+}
+
+.search-box{
+  margin-bottom:20px;
+}
+
+.search-box input{
+  width:100%;
+  height:55px;
+  border-radius:50px;
+  border:none;
+  padding:0 20px;
+  font-size:16px;
+  box-shadow:0 6px 18px rgba(0,0,0,0.15);
+  outline:none;
+}
+
+/* GRID FIX */
+#bookContainer{
+  display:grid;
+  grid-template-columns:1fr;
+  gap:18px;
+}
+
+.book-card{
+  width:100%;
+  background:white;
+  padding:18px;
+  border-radius:18px;
+  box-shadow:0 6px 15px rgba(0,0,0,0.08);
+  text-align:center;
+}
+
+.book-card img{
+  width:100%;
+  border-radius:12px;
+  margin-bottom:10px;
+}
+
+.button{
+  padding:10px 18px;
+  border:none;
+  border-radius:8px;
+  background:#2563eb;
+  color:white;
+  font-weight:600;
+  margin:5px 3px;
+  cursor:pointer;
+  transition:0.2s ease;
+}
+
+.button:hover{
+  background:#1d4ed8;
+}
+
+.bottom-nav{
+  position:fixed;
+  bottom:0;
+  width:100%;
+  height:65px;
+  background:white;
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  border-top:1px solid #ddd;
+  z-index: 5;
+  box-shadow:0 -2px 8px rgba(0,0,0,0.05);
+}
+
+.nav-item{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  color:#777;
+  font-size:12px;
+  cursor:pointer;
+}
+
+.nav-item i{
+  font-size:20px;
+  color:#777;
+}
+
+.nav-item.active span{
+  color:#0b6cb3;
+  font-weight:bold;
+}
+
+/* Admin */
+#adminBtn{
+  position:fixed;
+  top:0;
+  right:0;
+  width:45px;
+  height:45px;
+  z-index:999;
+}
+
+#adminPanel{
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.5);
+  backdrop-filter: blur(6px);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+}
+
+.admin-box{
+  background: #ffffff;
+  width: 90%;
+  max-width: 380px;
+  padding: 20px;
+  border-radius: 16px;
+  box-shadow: 0 20px 40px rgba(0,0,0,0.25);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.admin-box h2{
+  text-align: center;
+  margin-bottom: 10px;
+}
+
+.admin-box input{
+  padding: 10px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  font-size: 14px;
+}
+
+.admin-actions{
+  display: flex;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.admin-actions button{
+  flex: 1;
+  padding: 10px;
+  border: none;
+  border-radius: 8px;
+  background: #0b6cb3;
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.admin-actions button:last-child{
+  background: #999;
+}
+.hero-title{
+  font-size:36px;
+  font-weight:800;
+  text-align:center;
+  margin-top:15px;
+  color:#1e293b;
+}
+.hero-sub{
+  text-align:center;
+  margin-top:12px;
+  font-weight:bold;
+  text-transform:uppercase;
+  color:#29323c;
+  letter-spacing:1px;
+}
+
+.hero-tag{
+  text-align:center;
+  margin-top:8px;
+  font-size:13px;
+  text-transform:uppercase;
+  color:#555;
+}
+.hero-tag{
+  text-align:center;
+  margin-top:10px;
+  font-size:13px;
+  text-transform:uppercase;
+  letter-spacing:1px;
+  font-weight:bold;
+}
+
+/* ServQuick gradient */
+.temp-text{
+  background: linear-gradient(to right,#485563,#29323c);
+  -webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;
+}
+
+/* Sea Strike gradient */
+.perm-text{
+  background: linear-gradient(to right,#77FFD2,#6297DB,#1EECFF);
+  -webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;
+}
+.countdown-wrapper{
+  display:flex;
+  gap:20px;
+  flex-wrap:wrap;
+  justify-content:center;
+  margin-top:40px;
+}
+
+.mock-card{
+  background:white;
+  padding:16px;
+  border-radius:10px;
+  margin:12px;
+  text-align:center;
+  font-weight:600;
+  border:1px solid #e2e8f0;
+  box-shadow:0 4px 10px rgba(0,0,0,0.05);
+  transition:0.2s ease;
+}
+
+.mock-card:hover{
+  background:#f1f5f9;
+}
+.countdown-card{
+  background: linear-gradient(to right,#485563,#29323c);
+  padding:20px;
+  border-radius:20px;
+  color:white;
+  width:260px;
+  text-align:center;
+  box-shadow:0 10px 25px rgba(0,0,0,0.2);
+}
+
+.countdown-card h2{
+  letter-spacing:2px;
+  margin-bottom:15px;
+}
+
+.time-box{
+  display:flex;
+  justify-content:space-between;
+}
+
+.time-box div{
+  background:rgba(255,255,255,0.1);
+  padding:10px;
+  border-radius:12px;
+  width:50px;
+}
+
+.time-box span{
+  font-size:18px;
+  font-weight:bold;
+}
+
+.time-box p{
+  font-size:10px;
+  margin:0;
+  letter-spacing:1px;
+}
+
+
+/* Hero Title Upgrade */
+#studyTitle{
+  font-size:42px;
+  font-weight:800;
+  text-align:center;
+  margin-top:15px;
+  background:linear-gradient(to right,#6366f1,#0ea5e9);
+  -webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;
+  animation:fadeIn 1s ease forwards;
+}
+
+@keyframes fadeIn{
+  from{opacity:0; transform:translateY(20px);}
+  to{opacity:1; transform:translateY(0);}
+}
+#book h2{
+  margin-top:10px;
+  margin-bottom:15px;
+}
+
+/* Subtitle Upgrade */
+#study h2{
+  text-align:center;
+  font-size:18px;
+  font-weight:500;
+  margin-bottom:30px;
+  opacity:0.7;
+}
+
+/* Premium Glass Card */
+
+.tracker-card{
+  width:85%;
+  margin:16px auto;
+  padding:14px;
+  border-radius:10px;
+  background:white;
+  border:1px solid #e2e8f0;
+  box-shadow:0 4px 10px rgba(0,0,0,0.05);
+  text-align:center;
+  font-weight:600;
+  cursor:pointer;
+  transition:0.2s ease;
+}
+
+.tracker-card:hover{
+  background:#f1f5f9;
+}
+
+.tracker-card::before{
+  content:"";
+  position:absolute;
+  width:100%;
+  height:100%;
+  top:0;
+  left:-100%;
+  background:linear-gradient(120deg,transparent,rgba(255,255,255,.6),transparent);
+  transition:.6s;
+}
+
+.tracker-card:hover::before{
+  left:100%;
+}
+
+.tracker-card:hover{
+  transform:translateY(-6px);
+  box-shadow:0 25px 50px rgba(0,0,0,0.2);
+}
+
+
+.hidden {
+  display: none;
+}
+
+#studyTitle {
+  text-align: center;
+  margin-top: 20px;
+}
+
+/* Back Button */
+.backBtn {
+  background: #757F9A;
+  color: white;
+  border: none;
+  padding: 10px 16px;
+  border-radius: 10px;
+  margin: 10px 20px;
+  cursor: pointer;
+}
+
+/* Center Chapter Title */
+.chapter-title {
+  text-align: center;
+  font-size: 20px;
+  font-weight: bold;
+  margin: 15px 0;
+}
+
+/* Checkbox Style */
+.checkbox-container {
+display: block;
+position: relative;
+padding-left: 35px;
+margin: 12px 20px;
+cursor: pointer;
+font-size: 16px;
+user-select: none;
+}
+
+.custom-checkbox {
+position: absolute;
+opacity: 0;
+}
+
+.checkmark {
+position: absolute;
+top: 0;
+left: 0;
+height: 22px;
+width: 22px;
+background-color: #eee;
+border-radius: 4px;
+transition: 0.3s;
+}
+
+.custom-checkbox:checked ~ .checkmark {
+background-color: #2196F3;
+}
+
+.checkmark:after {
+content: "";
+position: absolute;
+display: none;
+}
+
+.custom-checkbox:checked ~ .checkmark:after {
+display: block;
+left: 7px;
+top: 3px;
+width: 5px;
+height: 10px;
+border: solid white;
+border-width: 0 3px 3px 0;
+transform: rotate(45deg);
+}
+.mock-card{
+  background: linear-gradient(to right,#a3bded,#6991c7);
+  padding:18px;
+  border-radius:15px;
+  margin:12px;
+  text-align:center;
+  font-weight:bold;
+}
+/* NEW CHAPTER CARD STYLE */
+.chapter-card {
+  background: white;
+  border-radius: 16px;
+  padding: 18px;
+  margin: 12px 20px;
+  box-shadow: 0 6px 15px rgba(0,0,0,0.08);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+  position: relative;
+}
+
+.chapter-card::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 100%;
+  width: 6px;
+  background: linear-gradient(to bottom,#6a11cb,#2575fc);
+  border-top-right-radius: 16px;
+  border-bottom-right-radius: 16px;
+}
+
+.chapter-card span {
+  font-size: 16px;
+  font-weight: bold;
+  color: black;
+}
+.tabs{
+  display:flex;
+  justify-content:center;
+  gap:10px;
+  margin:10px;
+}
+
+.tabs button{
+  padding:8px 15px;
+  border:none;
+  border-bottom:2px solid transparent;
+  background:none;
+}
+
+.activeTab{
+  border-bottom:2px solid blue;
+}
+
+.testCard{
+  background:#f5f5f5;
+  margin:8px;
+  padding:12px;
+  border-radius:10px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+}
+
+.popup{
+  position:fixed;
+  top:0;
+  left:0;
+  width:100%;
+  height:100%;
+  background:rgba(0,0,0,0.4);
+  display:none;
+  justify-content:center;
+  align-items:center;
+}
+
+.popupBox{
+  background:white;
+  padding:20px;
+  border-radius:12px;
+  text-align:center;
+}
+
+.joinBtn{
+  background:#25D366;
+  border:none;
+  padding:10px 20px;
+  margin:10px;
+  color:white;
+  border-radius:8px;
+}
+
+.cancelBtn{
+  padding:8px 15px;
+}
+
+footer{
+  text-align:center;
+  margin-top:25px;
+  font-size:13px;
+  opacity:.8;
+}
+@media(max-width:600px){
+  h1{font-size:26px}
+}
+/* HERO BRAND SECTION */
+
+.hero-brand{
+  text-align: center;
+  margin-top: 30px;
+  margin-bottom: 25px;
+  animation: fadeUp 1s ease forwards;
+  opacity: 0;
+}
+
+.hosted-text{
+  font-size: 14px;
+  color: #666;
+  letter-spacing: 2px;
+}
+
+.brand-title{
+  font-size: 28px;
+  font-weight: 800;
+  background: linear-gradient(90deg, #0b6cb3, #6f42c1);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin: 5px 0;
+}
+
+.tagline{
+  font-size: 13px;
+  color: #555;
+}
+
+/* MOCK TITLE */
+
+.mocks-title{
+  font-size: 30px;
+  font-weight: 800;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+/* ANIMATION */
+
+@keyframes fadeUp{
+  from{
+    transform: translateY(30px);
+    opacity: 0;
+  }
+  to{
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+.hero-badge{
+  width:fit-content;
+  margin:30px auto 15px auto;
+  padding:8px 18px;
+  border-radius:30px;
+
+  font-size:12px;
+  font-weight:600;
+  letter-spacing:0.5px;
+
+  background:rgba(0,0,0,0.05);
+  backdrop-filter:blur(10px);
+
+  display:flex;
+  align-items:center;
+  gap:8px;
+
+  animation:fadeUp 1s ease forwards;
+  opacity:0;
+}
+
+.hero-badge .dot{
+  width:8px;
+  height:8px;
+  border-radius:50%;
+  background:linear-gradient(90deg,#00c6ff,#0072ff);
+  box-shadow:0 0 10px rgba(0,114,255,0.6);
+}
+
+/* ===== FIXED NO-GLITCH SPLASH ===== */
+
+html, body{
+  margin:0;
+  padding:0;
+}
+
+body.splash-active{
+  overflow:hidden;   /* Navbar scroll stop */
+}
+/* ===== PREMIUM WHITE SPLASH ===== */
+
+body.splash-active{
+  overflow:hidden;
+}
+
+#splash{
+  position:fixed;
+  inset:0;
+  background:#ffffff;   /* PURE WHITE */
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  z-index:9999999;
+  opacity:1;
+  transition:opacity .6s ease;
+}
+
+.splash-inner{
+  text-align:center;
+  animation:fadeUp 0.8s ease forwards;
+}
+
+.logo-box{
+  width:190px;   /* Bigger Logo */
+  margin:0 auto 25px;
+}
+
+.logo-img{
+  width:100%;
+  .logo-img{
+  width:100%;
+}
+
+/* Makes logo pure black */
+}
+
+/* Brand Name */
+.brand{
+  font-size:32px;
+  font-weight:800;
+  letter-spacing:4px;
+  color:#111;
+  margin-bottom:15px;
+}
+
+/* Powered By */
+.powered{
+  font-size:14px;
+  color:#666;
+}
+
+.powered span{
+  font-weight:700;
+  letter-spacing:2px;
+  color:#000;
+}
+
+/* Hide Animation */
+#splash.hide{
+  opacity:0;
+}
+
+/* ===== PREMIUM PRICING POPUP ===== */
+
+.premiumPopup{
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,0.65);
+  display:none;
+  justify-content:center;
+  align-items:center;
+  z-index:99999;
+}
+
+.premiumCard{
+  width:92%;
+  max-width:380px;
+  border-radius:25px;
+  padding:25px;
+  position:relative;
+  color:white;
+  backdrop-filter:blur(20px);
+  background:rgba(255,255,255,0.08);
+  border:1px solid rgba(255,255,255,0.2);
+  box-shadow:0 0 40px rgba(0,114,255,0.4);
+  animation:fadeUp .5s ease;
+}
+
+.premiumCard::before{
+  content:"";
+  position:absolute;
+  inset:-2px;
+  border-radius:25px;
+  background:linear-gradient(90deg,#00c6ff,#0072ff,#00c6ff);
+  z-index:-1;
+  filter:blur(15px);
+  opacity:.8;
+}
+
+.closeBtn{
+  position:absolute;
+  top:15px;
+  right:15px;
+  width:32px;
+  height:32px;
+  border-radius:50%;
+  border:none;
+  font-size:18px;
+  cursor:pointer;
+}
+
+.badge{
+  background:linear-gradient(90deg,#ff9800,#ff5722);
+  padding:6px 14px;
+  border-radius:20px;
+  font-size:12px;
+  display:inline-block;
+  margin-bottom:10px;
+}
+
+.toggle{
+  display:flex;
+  background:#111;
+  border-radius:30px;
+  overflow:hidden;
+  margin:15px 0;
+}
+
+.toggle button{
+  flex:1;
+  padding:8px;
+  border:none;
+  background:none;
+  color:white;
+  cursor:pointer;
+}
+
+.activeToggle{
+  background:linear-gradient(90deg,#00c6ff,#0072ff);
+}
+
+.price{
+  font-size:42px;
+  font-weight:bold;
+}
+
+.feature{
+  font-size:14px;
+  margin:6px 0;
+}
+
+.buyBtn{
+  width:100%;
+  padding:12px;
+  border:none;
+  border-radius:30px;
+  margin-top:12px;
+  background:linear-gradient(90deg,#00c6ff,#0072ff);
+  color:white;
+  font-weight:bold;
+  cursor:pointer;
+}
+
+.freeBtn{
+  width:100%;
+  padding:10px;
+  border-radius:30px;
+  margin-top:10px;
+  border:1px solid white;
+  background:transparent;
+  color:white;
+  cursor:pointer;
+}
+
+.rating{
+  margin-top:8px;
+  font-size:14px;
+  opacity:.9;
+}
+.app-header {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 18px;
+  backdrop-filter: blur(12px);
+  background: rgba(255,255,255,0.6);
+}
+
+.hamburger {
+  font-size: 22px;
+  cursor: pointer;
+}
+
+.brand-name {
+  font-weight: bold;
+  font-size: 16px;
+  letter-spacing: 1px;
+}
+
+.logo-wrapper {
+  width: 36px;
+  height: 36px;
+  background: black;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.logo-wrapper img {
+  width: 22px;
+  height: 22px;
+}
+/* ===== PW STYLE SIDE MENU ===== */
+
+.side-menu {
+  position: fixed;
+  top: 0;
+  left: -280px;
+  width: 270px;
+  height: 100%;
+  background: #ffffff;
+  padding: 25px 20px;
+  transition: 0.35s cubic-bezier(.77,0,.18,1);
+  z-index: 1100;
+  box-shadow: 5px 0 30px rgba(0,0,0,0.08);
+  display:flex;
+  flex-direction:column;
+}
+
+.side-menu h2{
+  font-size:20px;
+  font-weight:800;
+  color:#111;
+  margin-bottom:30px;
+}
+
+.side-menu ul{
+  list-style:none;
+  padding:0;
+  margin:0;
+}
+
+.side-menu ul li{
+  padding:14px 12px;
+  margin-bottom:8px;
+  border-radius:10px;
+  font-weight:600;
+  cursor:pointer;
+  color:#222;
+  display:flex;
+  align-items:center;
+  gap:10px;
+  transition:0.2s ease;
+  position:relative;
+}
+
+.side-menu ul li:hover{
+  background:#f1f5ff;
+  color:#2563eb;
+}
+
+.side-menu ul li.activeMenu{
+  background:#eef2ff;
+  color:#2563eb;
+}
+
+.side-menu ul li.activeMenu::before{
+  content:"";
+  position:absolute;
+  left:-20px;
+  top:0;
+  height:100%;
+  width:5px;
+  background:#2563eb;
+  border-radius:0 4px 4px 0;
+}
+
+/* Overlay smoother */
+.overlay{
+  backdrop-filter: blur(3px);
+}
+
+/* Close button */
+.close-btn{
+  align-self:flex-end;
+  font-size:20px;
+  cursor:pointer;
+  margin-bottom:20px;
+}
+
+/* Telegram Floating Button */
+.tg-float{
+  position:fixed;
+  bottom:90px;
+  right:20px;
+  width:58px;
+  height:58px;
+  background:white;
+  border-radius:50%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  box-shadow:0 8px 20px rgba(0,0,0,0.15);
+  animation:float 3s ease-in-out infinite;
+  z-index:1000;
+  overflow:hidden;
+  padding:8px;
+}
+
+.tg-float img{
+  width:100%;
+  height:100%;
+  object-fit:contain;
+  display:block;
+}
+
+.tg-float img{
+  width:100%;
+  height:100%;
+  object-fit:contain;
+  display:block;
+}
+
+@keyframes float{
+  0%{ transform:translateY(0px); }
+  50%{ transform:translateY(-6px); }
+  100%{ transform:translateY(0px); }
+}
+/* ===== Accelerator Premium UI Card ===== */
+
+.accelerator-card{
+  position:relative;
+  border-radius:20px;
+  overflow:hidden;
+  margin-bottom:20px;
+  cursor:pointer;
+  box-shadow:0 15px 40px rgba(0,0,0,0.15);
+  transition:0.3s ease;
+}
+
+.accelerator-card img{
+  width:100%;
+  display:block;
+  border-radius:20px;
+}
+
+.accelerator-card:hover{
+  transform:translateY(-5px);
+  box-shadow:0 25px 60px rgba(0,0,0,0.25);
+}
+
+.acc-overlay{
+  position:absolute;
+  inset:0;
+  background:linear-gradient(to top,rgba(0,0,0,0.6),transparent);
+  z-index:1;
+}
+
+.acc-content{
+  position:absolute;
+  bottom:20px;
+  left:20px;
+  color:white;
+  z-index:2;
+}
+
+.acc-content h2{
+  margin:0;
+  font-size:20px;
+  font-weight:800;
+}
+
+.acc-content p{
+  margin:5px 0 12px;
+  font-size:13px;
+}
+
+.join-now-btn{
+  background:linear-gradient(90deg,#00c6ff,#0072ff);
+  border:none;
+  padding:8px 16px;
+  border-radius:20px;
+  color:white;
+  font-weight:600;
+  cursor:pointer;
+}
+/* LOCKED TEST STYLE */
+.lockedTest{
+  opacity:.6;
+  filter:blur(1px);
+  position:relative;
+}
+
+.lockedTest i{
+  color:#e11d48;
+}
+
+.openTest i{
+  color:#16a34a;
+}
+
+/* LOCK POPUP */
+.lockPopup{
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,0.65);
+  display:none;
+  justify-content:center;
+  align-items:center;
+  z-index:99999;
+}
+
+.lockCard{
+  width:92%;
+  max-width:360px;
+  padding:25px;
+  border-radius:25px;
+  color:white;
+  text-align:center;
+  backdrop-filter:blur(20px);
+  background:rgba(255,255,255,0.08);
+  border:1px solid rgba(255,255,255,0.2);
+  box-shadow:0 0 40px rgba(0,114,255,0.4);
+  animation:fadeUp .4s ease;
+}
+
+.lockCard h2{
+  margin-bottom:15px;
+}
+
+.lockCard p{
+  font-size:14px;
+  margin-bottom:10px;
+}
+
+.subLine{
+  font-weight:bold;
+  margin-bottom:20px;
+}
+
+.unlockBtn{
+  width:100%;
+  padding:12px;
+  border:none;
+  border-radius:30px;
+  background:linear-gradient(90deg,#00c6ff,#0072ff);
+  color:white;
+  font-weight:bold;
+  cursor:pointer;
+}
+
+.detailsSection{
+  margin-top:20px;
+}
+
+.detailsList{
+  padding-left:18px;
+}
+
+.detailsList li{
+  list-style: disc;
+  list-style-position: inside;
+  margin-bottom:14px;
+  padding:14px 18px;
+  background:#ffffff;
+  border:1px solid #e5e7eb;
+  border-left:4px solid #000;
+  border-radius:14px;
+  font-size:15px;
+  color:#1e293b;
+  line-height:1.5;
+  transition:0.2s ease;
+}
+
+.detailsList li:hover{
+  transform:translateY(-2px);
+}
+
+</style>
+</head>
+
+<body>
+  <!-- PREMIUM HEADER -->
+<div class="app-header">
+
+  <div class="hamburger" onclick="openMenu()">☰</div>
+
+  <div class="brand-name">JEE TRACKERZ</div>
+
+  <div class="logo-wrapper">
+      <img src="logo.png" alt="logo">
+  </div>
+
+</div>
+ <div id="splash">
+  <div class="splash-inner">
+    <div class="logo-box">
+      <img src="logo-transparent.png" class="logo-img">
+    </div>
+
+    <h1 class="brand">JEE TRACKERZ</h1>
+    <p class="powered">Powered By <span>𝐌𝐀𝐘𝐀𝐍𝐊</span></p>
+  </div>
+</div>
+</div>
+  
+  
+
+
+<div id="home" class="section active">
+  <div class="wrapper">
+<div class="hero-badge">
+  <span class="dot"></span>
+  India’s Most Focused JEE Tracking System
+</div>
+    <div class="hero-title">JEE TRACKERZ</div>
+
+    <div class="hero-sub">
+      DREAM IT. ACHIEVE IT.
+    </div>
+
+    <div class="hero-tag">
+  <span class="temp-text">
+    EVERYTHING IS TEMPORARY BUT
+  </span>
+  <span class="perm-text">
+    SELECTION IS PERMANENT
+  </span>
+</div>
+<div class="countdown-wrapper">
+
+  <div class="countdown-card">
+    <h2>JEE 2027</h2>
+    <div class="time-box">
+      <div><span id="jeeDays"></span><p>DAYS</p></div>
+      <div><span id="jeeHours"></span><p>HRS</p></div>
+      <div><span id="jeeMinutes"></span><p>MIN</p></div>
+      <div><span id="jeeSeconds"></span><p>SEC</p></div>
+    </div>
+  </div>
+
+  <div class="countdown-card">
+    <h2>NDA 2 2026</h2>
+    <div class="time-box">
+      <div><span id="ndaDays"></span><p>DAYS</p></div>
+      <div><span id="ndaHours"></span><p>HRS</p></div>
+      <div><span id="ndaMinutes"></span><p>MIN</p></div>
+      <div><span id="ndaSeconds"></span><p>SEC</p></div>
+    </div>
+  </div>
+
+  <div class="countdown-card">
+    <h2>NSE OLYMPIAD</h2>
+    <div class="time-box">
+      <div><span id="nseDays"></span><p>DAYS</p></div>
+      <div><span id="nseHours"></span><p>HRS</p></div>
+      <div><span id="nseMinutes"></span><p>MIN</p></div>
+      <div><span id="nseSeconds"></span><p>SEC</p></div>
+    </div>
+  </div>
+</div>
+
+  <footer> POWERED BY <b>𝐌𝐀𝐘𝐀𝐍𝐊   <i class="ph ph-copyright"></i> 2026</b></footer>
+  </div>
+</div>
+
+<div id="book" class="section">
+  <div class="wrapper">
+    <h2>𝐉𝐄𝐄 𝐈𝐀𝐓 𝐈𝐈𝐒𝐄𝐑 𝐁𝐎𝐎𝐊𝐒    <i class="ph ph-book-bookmark"></i></h2>
+
+<!-- Accelerator UI Card -->
+<div class="accelerator-card" onclick="window.open('https://t.me/prayasjee2027_lecture','_blank')">
+  <div class="acc-overlay"></div>
+  <img src="accelerator-banner.jpg" alt="JEE Accelerator Program">
+  <div class="acc-content">
+    <h2>JEE ACCELERATOR</h2>
+    <p>Program Batch – Notes + PYQs + Books</p>
+    <button class="join-now-btn">JOIN NOW</button>
+  </div>
+</div>
+
+    <div id="bookContainer"></div>
+  </div>
+</div>
+
+<div id="mock" class="section">
+  <div class="wrapper">
+    <div class="hero-brand">
+  <p class="hosted-text">Hosted by</p>
+  <h1 class="brand-title">JEE TRACKERZ</h1>
+  <p class="tagline">India's Smart JEE Preparation Platform <i class="ph ph-rocket-launch"></i> </p>
+</div>
+    
+<h2 class="mocks-title">MOCKS </h2>
+
+
+    <div id="mockHome">
+
+  <div class="mock-card" onclick="openMock('foundation')">
+    JEE FOUNDATION MOCKS
+  </div>
+
+  <div class="mock-card" onclick="openMock('mains')">
+    JEE MAINS MOCKS
+  </div>
+
+  <div class="mock-card" onclick="openMock('advanced')">
+    JEE ADVANCED MOCKS
+  </div>
+<div class="mock-card" onclick="openMock('iat')">
+  IAT MOCKS
+</div>
+
+<div class="mock-card" onclick="openMock('nest')">
+  NEST MOCKS
+</div>
+</div>
+
+
+<div id="mockTests" style="display:none;">
+  <button class="backBtn" onclick="goMockHome()">← Back</button>
+
+  <h2 id="mockTitle"></h2>
+
+  <div class="tabs">
+    <button onclick="showTab('tests')" class="activeTab">𝐓𝐄𝐒𝐓𝐒</button>
+    <button onclick="showTab('details')">𝐃𝐄𝐓𝐀𝐈𝐋𝐒</button>
+  </div>
+
+  <div id="testsTab"></div>
+<div class="detailsSection">
+
+  <ul class="detailsList">
+    <li>Master your JEE preparation through full length mock tests</li>
+
+    <li>Get ALL India Rank & Statewise Rank instantly</li>
+
+    <li>Based on NTA Latest Pattern & Difficulty Level</li>
+
+    <li>Detailed Solutions with Deep Performance Analytics</li>
+  </ul>
+
+</div>
+</div>
+  </div>
+</div>
+
+
+<div id="study" class="section">
+  <div class="wrapper">
+
+
+  <h1 id="studyTitle">𝐒𝐓𝐔𝐃𝐘  <i class="ph ph-rocket-launch"></i></h1>
+    <h2 id="study title "> Eᴠᴇʀʏᴛʜɪɴɢ ʏᴏᴜ ɴᴇᴇᴅ ᴛᴏ sᴛᴜᴅʏ sᴍᴀʀᴛᴇʀ, ɴᴏᴛ ʜᴀʀᴅᴇʀ <i class="ph ph-student"></i> </h2>
+  <!-- MAIN CARD -->
+<div id="mainCard" class="tracker-card" onclick="openSubjects()">
+  JEE Syllabus Tracker  <i class="ph ph-target"></i>
+</div>
+
+
+  <!-- SUBJECT VIEW -->
+  <div id="subjectView" class="hidden"></div>
+
+  <!-- CHAPTER VIEW -->
+  <div id="chapterView" class="hidden"></div>
+
+  <!-- TASK VIEW -->
+  <div id="taskView" class="hidden"></div>
+
+</div>
+</div>
+
+
+</div>
+<div id="sideMenu" class="side-menu">
+  <div class="close-btn" onclick="closeMenu()">✖</div>
+  <h2>JEE TRACKERZ</h2>
+  <ul>
+    <ul>
+  <li onclick="menuNavigate('home',0)">
+    <i class="ph ph-lightning"></i> Home
+  </li>
+
+  <li onclick="menuNavigate('book',1)">
+    <i class="ph ph-books"></i> Books
+  </li>
+
+  <li onclick="menuNavigate('mock',2)">
+    <i class="ph ph-notepad"></i> Mock Tests
+  </li>
+
+  <li onclick="menuNavigate('study',3)">
+    <i class="ph ph-target"></i> Study
+  </li>
+</ul>
+  </ul>
+</div>
+
+<div id="overlay" class="overlay" onclick="closeMenu()"></div>
+<div class="bottom-nav">
+  <div class="nav-item active" onclick="showPage('home',this)">
+    <i class="ph ph-star-four"></i>
+    <span>Home</span>
+  </div>
+  <div class="nav-item" onclick="showPage('book',this)">
+    <i class="ph ph-books"></i>
+    <span>Book</span>
+  </div>
+  <div class="nav-item" onclick="showPage('mock',this)">
+    <i class="ph ph-notepad"></i>
+    <span>Mock</span>
+  </div>
+  <div class="nav-item" onclick="showPage('study',this)">
+    <i class="ph ph-graduation-cap"></i>
+    <span>Study</span>
+  </div>
+</div>
+</div>
+
+<script>
+let books = JSON.parse(localStorage.getItem("books")) || [];
+
+
+function saveBooks(){
+  localStorage.setItem("books", JSON.stringify(books));
+}
+
+function showPage(id,el){
+  document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  el.classList.add('active');
+}
+
+function renderBooks(list=books){
+  let container=document.getElementById("bookContainer");
+  container.innerHTML="";
+  list.forEach((book,index)=>{
+    container.innerHTML+=`
+    <div class="book-card">
+      <img src="${book.image}">
+      <h3>${book.name}</h3>
+      <button class="button" onclick="window.open('${book.getLink}')">DIRECT PDF</button>
+      <button class="button" onclick="window.open('${book.downloadLink}')"> HOW TO DOWNLOAD <i class="ph ph-youtube-logo"></i></button>
+      
+    </div>`;
+  });
+}
+
+function searchBooks(){
+  let val = document.getElementById("searchInput").value.toLowerCase().trim();
+
+  // Secret admin trigger
+  
+
+  // Normal search
+  let filtered = books.filter(b =>
+    b.name.toLowerCase().includes(val)
+  );
+
+  renderBooks(filtered);
+}
+
+
+renderBooks();
+function countdown(targetDate, ids){
+  function update(){
+    const now = new Date().getTime();
+    const distance = targetDate - now;
+
+    const days = Math.floor(distance/(1000*60*60*24));
+    const hours = Math.floor((distance%(1000*60*60*24))/(1000*60*60));
+    const minutes = Math.floor((distance%(1000*60*60))/(1000*60));
+    const seconds = Math.floor((distance%(1000*60))/1000);
+
+    document.getElementById(ids[0]).innerText = days;
+    document.getElementById(ids[1]).innerText = hours;
+    document.getElementById(ids[2]).innerText = minutes;
+    document.getElementById(ids[3]).innerText = seconds;
+  }
+  update();
+  setInterval(update,1000);
+}
+
+countdown(new Date("Jan 1, 2027 00:00:00").suggestedTime || new Date("Jan 1, 2027 00:00:00").getTime(),
+["jeeDays","jeeHours","jeeMinutes","jeeSeconds"]);
+
+countdown(new Date("Sep 1, 2026 00:00:00").getTime(),
+["ndaDays","ndaHours","ndaMinutes","ndaSeconds"]);
+
+countdown(new Date("Nov 1, 2026 00:00:00").getTime(),
+["nseDays","nseHours","nseMinutes","nseSeconds"]);
+</script>
+<!-- Telegram Popup -->
+<div id="tgPopup" style="
+position:fixed;
+inset:0;
+background:rgba(0,0,0,0.6);
+display:none;
+align-items:center;
+justify-content:center;
+z-index:9999;
+">
+  <div style="
+  background:#fff;
+  color:#000;
+  padding:25px;
+  border-radius:20px;
+  max-width:360px;
+  width:90%;
+  text-align:center;
+  font-family:Poppins,sans-serif;
+  ">
+    <h2 style="margin-bottom:10px;">❤️ FREE RESOURCES ❤️</h2>
+    <p style="font-size:14px;margin-bottom:20px;">
+      Join for <b>PW Batches, PCMB Notes,<br>
+      Modules & PW JEE Books</b>
+    </p>
+
+    <a href="https://t.me/Jeetrackerz" target="_blank"
+      style="
+      display:block;
+      background:#1da1f2;
+      color:#fff;
+      padding:14px;
+      border-radius:14px;
+      text-decoration:none;
+      font-weight:600;
+      margin-bottom:12px;
+      ">
+      🚀 Join Telegram
+    </a>
+
+    <button onclick="document.getElementById('tgPopup').style.display='none'"
+      style="
+      width:100%;
+      padding:14px;
+      border:none;
+      border-radius:14px;
+      background:#e5e7eb;
+      font-size:15px;
+      cursor:pointer;
+      ">
+      Cancel
+    </button>
+
+    <p style="margin-top:12px;font-size:12px;opacity:.6;">
+      Powered by <b>𝙼𝙰𝚈𝙰𝙽𝙺</b>
+    </p>
+  </div>
+</div>
+<script>
+
+// ===== EASY EDIT CONST =====
+const syllabusData = {
+  PHYSICS: ["Mathematical Tools",
+"Units and Measurements",
+"Motion in a Straight Line",
+"Motion in a Plane",
+"Newton’s Laws of Motion",
+"Work, Energy and Power",
+"Centre of Mass and System of Particles",
+"Rotational Motion",
+"Gravitation",
+"Mechanical Properties of Solids",
+"Mechanical Properties of Fluids",
+"Thermal Properties of Matter",
+"Kinetic Theory of Gases",
+"Thermodynamics",
+"Oscillations",
+"Waves","Electric Charges and Fields",
+"Electrostatic Potential and Capacitance",
+"Current Electricity",
+"Moving Charges and Magnetism",
+"Magnetism and Matter",
+"Electromagnetic Induction",
+"Alternating Current",
+"Electromagnetic Waves",
+"Ray Optics and Optical Instruments",
+"Wave Optics",
+"Dual Nature of Radiation and Matter",
+"Atoms",
+"Nuclei",
+"Semiconductor" , "Electronics",],
+  CHEMISTRY: ["Atomic Structure",
+"Some Basic Concepts of Chemistry",
+"Classification of Elements and Periodicity in Properties",
+"Chemical Bonding ",
+"States of Matter",
+" Thermodynamics ",
+"Redox Reaction",
+"Equilibrium",
+"The p-Block Elements",
+"IUPAC Nomenclature",
+"Isomerism",
+"General Organic Chemistry",
+"Hydrocarbons",
+"Purification and Analysis of Organic Compounds",
+"Hydrogen",
+"s-Block Elements",
+"Environmental Chemistry","Solutions",
+"Electrochemistry",
+"Chemical Kinetics",
+"Haloalkanes and Haloarenes",
+"Alcohols, Phenols and Ethers",
+"Aldehydes, Ketones and Carboxylic Acids",
+"Amines",
+"Biomolecules",
+"Coordination Compounds",
+"The p-block Elements (Group 15 to 18)",
+"The d and f-Block Elements",
+"Salt Analysis",
+"The Solid State",
+"Surface Chemistry",
+"Metallurgy",
+"Polymers",
+"Chemistry in Everyday Life",],
+  
+  MATHEMATICS: ["Basic Mathematics and Logarithm",
+"Sets",
+"Trigonometric Ratios and Identities",
+"Trigonometric Equations",
+"Quadratic Equations",
+"Complex Number",
+"Sequences and Series",
+"Binomial Theorem",
+"Permutations and Combinations",
+"Straight Lines",
+"Circles",
+"Parabola",
+"Ellipse",
+"Hyperbola",
+"Statistics",
+"Properties of a Triangle","Determinants",
+"Matrices",
+"Relations and Functions",
+"Inverse Trigonometric Functions",
+"Limit, Continuity and Differentiability",
+"Methods of Differentiation",
+"Applications of Derivatives",
+"Indefinite Integration",
+"Definite Integration",
+"Application of Integrals",
+"Differential Equations",
+"Vector Algebra",
+"Three-Dimensional Geometry",
+"Probability",]
+  
+};
+
+
+const taskList = [
+  "𝐋𝐄𝐂𝐓𝐔𝐑𝐄",
+  "𝐍𝐎𝐓𝐄𝐒",
+  "𝐃𝐏𝐏",
+  "𝐏𝐘𝐐 𝐌𝐀𝐈𝐍𝐒",
+  "𝐏𝐘𝐐 𝐀𝐃𝐕𝐀𝐍𝐂𝐄",
+  "𝐑𝐄𝐕𝐈𝐒𝐈𝐎𝐍 1",
+  "𝐑𝐄𝐕𝐈𝐒𝐈𝐎𝐍 2",
+  "𝐌𝐎𝐃𝐔𝐋𝐄 "
+];
+
+let currentSubject = "";
+let currentChapter = "";
+
+
+// ===== OPEN SUBJECTS =====
+function openSubjects(){
+  document.getElementById("studyTitle").style.display = "none";
+  document.getElementById("mainCard").style.display = "none";
+
+  let subjectView = document.getElementById("subjectView");
+  subjectView.classList.remove("hidden");
+
+  let html = `<button class="backBtn" onclick="goMain()">⬅ Back</button>`;
+
+  for(let subject in syllabusData){
+    html += `<div class="tracker-card" onclick="openChapters('${subject}')">${subject}</div>`;
+  }
+
+  subjectView.innerHTML = html;
+}
+
+// ===== OPEN CHAPTERS =====
+function openChapters(subject){
+  currentSubject = subject;
+
+  document.getElementById("subjectView").classList.add("hidden");
+
+  let chapterView = document.getElementById("chapterView");
+  chapterView.classList.remove("hidden");
+
+  let html = `<button class="backBtn" onclick="goSubjects()">⬅ Back</button>`;
+
+  syllabusData[subject].forEach(ch=>{
+    html += `
+  <div class="chapter-card" onclick="openTasks('${ch}')">
+    <span>${ch}</span>
+  </div>
+`;
+  });
+
+  chapterView.innerHTML = html;
+}
+
+// ===== OPEN TASKS =====
+function openTasks(chapter){
+  currentChapter = chapter;
+
+  document.getElementById("chapterView").classList.add("hidden");
+
+  let taskView = document.getElementById("taskView");
+  taskView.classList.remove("hidden");
+
+  let html = `
+    <button class="backBtn" onclick="goChapters()">⬅ Back</button>
+    <div class="chapter-title">${chapter}</div>
+  `;
+
+  taskList.forEach(task=>{
+    let key = currentSubject + "_" + currentChapter + "_" + task;
+    let checked = localStorage.getItem(key) === "true" ? "checked" : "";
+
+    html += `
+      <label class="checkbox-container">${task}
+        <input type="checkbox" class="custom-checkbox"
+          ${checked}
+          onchange="saveProgress('${key}', this.checked)">
+        <span class="checkmark"></span>
+      </label>
+    `;
+  });
+
+  taskView.innerHTML = html;
+}
+
+// ===== SAVE PROGRESS =====
+function saveProgress(key,value){
+  localStorage.setItem(key,value);
+}
+
+// ===== BACK FUNCTIONS =====
+function goMain(){
+  document.getElementById("studyTitle").style.display = "block";
+  document.getElementById("mainCard").style.display = "block";
+  document.getElementById("subjectView").classList.add("hidden");
+}
+
+function goSubjects(){
+  document.getElementById("chapterView").classList.add("hidden");
+  document.getElementById("subjectView").classList.remove("hidden");
+}
+
+function goChapters(){
+  document.getElementById("taskView").classList.add("hidden");
+  document.getElementById("chapterView").classList.remove("hidden");
+}
+function openMock(type){
+  document.getElementById("mockHome").style.display="none";
+  document.getElementById("mockTests").style.display="block";
+
+  document.getElementById("mockTitle").innerText =
+    type.toUpperCase()+" MOCKS";
+
+  generateTests();
+}
+
+function goMockHome(){
+  document.getElementById("mockHome").style.display="block";
+  document.getElementById("mockTests").style.display="none";
+}
+
+function generateTests(){
+  let container=document.getElementById("testsTab");
+  container.innerHTML="";
+
+  for(let i=1;i<=30;i++){
+
+    if(i===1){
+      container.innerHTML+=`
+      <div class="testCard openTest" onclick="startDemoTest()">
+        <span>𝐓𝐄𝐒𝐓 ${i}</span>
+        <i class="ph ph-seal-check"></i>
+      </div>`;
+    } else {
+      container.innerHTML+=`
+      <div class="testCard lockedTest" onclick="openLockPopup()">
+        <span>𝐓𝐄𝐒𝐓 ${i}</span>
+        <i class="ph ph-lock-key"></i>
+      </div>`;
+    }
+
+  }
+}
+
+function showTab(tab){
+  document.getElementById("testsTab").style.display =
+    tab==="tests"?"block":"none";
+
+  document.getElementById("detailsTab").style.display =
+    tab==="details"?"block":"none";
+}
+
+function openPopup(){
+  document.getElementById("lockPopup").style.display="flex";
+}
+
+function closePopup(){
+  document.getElementById("lockPopup").style.display="none";
+}
+
+</script>
+<script>
+document.body.classList.add("splash-active");
+
+window.addEventListener("load", function(){
+
+  const splash = document.getElementById("splash");
+
+  setTimeout(function(){
+
+    splash.classList.add("hide");
+
+    setTimeout(function(){
+      splash.style.display = "none";
+      document.body.classList.remove("splash-active");
+    }, 600);
+
+  }, 1500);
+
+});
+function openPremium(){
+  document.getElementById("premiumPopup").style.display="flex";
+}
+
+function closePremium(){
+  document.getElementById("premiumPopup").style.display="none";
+}
+
+function setPlan(type){
+  let price = document.getElementById("priceValue");
+  let plan = document.getElementById("planType");
+
+  document.getElementById("monthlyBtn").classList.remove("activeToggle");
+  document.getElementById("yearlyBtn").classList.remove("activeToggle");
+
+  if(type==="monthly"){
+    price.innerText="49";
+    plan.innerText="per month";
+    document.getElementById("monthlyBtn").classList.add("activeToggle");
+  }else{
+    price.innerText="149";
+    plan.innerText="per year";
+    document.getElementById("yearlyBtn").classList.add("activeToggle");
+  }
+}
+
+function openTelegram(){
+  window.open("https://t.me/Jeetrackerz","_blank");
+}
+function openTgPopup(){
+  document.getElementById("tgPopup").style.display="flex";
+}
+function openLockPopup(){
+  document.getElementById("lockPopup").style.display="flex";
+}
+
+function closeLockPopup(){
+  document.getElementById("lockPopup").style.display="none";
+}
+
+function startDemoTest(){
+  alert("Demo Test Coming Soon 🚀");
+}
+</script>
+<div id="premiumPopup" class="premiumPopup">
+  <div class="premiumCard">
+
+    <button class="closeBtn" onclick="closePremium()">×</button>
+
+    <div class="badge">🎯 FREE DEMO</div>
+
+    <h2>JEE MOCK TEST</h2>
+
+    <p style="font-size:14px;opacity:.9;margin-bottom:20px;">
+      Experience real NTA level test interface <br>
+      with demo questions.
+    </p>
+
+    <div class="feature">✔ NTA Level Interface</div>
+    <div class="feature">✔ Real Exam Environment</div>
+    <div class="feature">✔ Instant Result (Demo)</div>
+
+    <button class="buyBtn" onclick="startDemoTest()">START FREE DEMO</button>
+
+  </div>
+</div>
+  </div>
+</div>
+<script>
+function openMenu() {
+  document.getElementById("sideMenu").style.left = "0";
+  document.getElementById("overlay").style.display = "block";
+}
+
+function closeMenu() {
+  document.getElementById("sideMenu").style.left = "-260px";
+  document.getElementById("overlay").style.display = "none";
+}
+function menuNavigate(page,index){
+
+  // Page change
+  showPage(page, document.querySelectorAll('.nav-item')[index]);
+
+  // Active highlight
+  document.querySelectorAll('.side-menu ul li')
+    .forEach(li=>li.classList.remove('activeMenu'));
+
+  document.querySelectorAll('.side-menu ul li')[index]
+    .classList.add('activeMenu');
+
+  // Close menu
+  closeMenu();
+}
+function startDemoTest(){
+  closePremium();
+  alert("Demo test coming soon 🚀\nAbhi UI preview mode hai.");
+}
+</script>
+<!-- Floating Telegram Button -->
+<div class="tg-float" onclick="openTgPopup()">
+  <img src="telegram.png" alt="Telegram">
+</div>
+
+
+</div>
+<div id="lockPopup" class="lockPopup">
+  <div class="lockCard">
+
+    <button class="closeBtn" onclick="closeLockPopup()">×</button>
+
+    <h2>🔒 TEST LOCKED</h2>
+
+    <p>
+      This test will unlock at <b>1,000 Telegram Members 🚀</b>
+    </p>
+
+    <p class="subLine">
+      Join Now & Help Us Reach 1K!
+    </p>
+
+    <button class="unlockBtn" onclick="openTelegram()">JOIN TELEGRAM</button>
+
+  </div>
+</div>
+</body>
+</html>
